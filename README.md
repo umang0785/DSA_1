@@ -1,9 +1,11 @@
-# DSA_1
-project of DSA
+# DSA_1  
+Project of DSA
 
+```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+
 void search(int arr[], int size, int key) 
 {
     for (int i = 0; i < size; i++) {
@@ -14,6 +16,7 @@ void search(int arr[], int size, int key)
     }
     printf("Element not found\n");
 }
+
 int main(){
     const int size = 5;
     int arr[size];
