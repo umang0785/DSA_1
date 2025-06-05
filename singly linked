@@ -1,0 +1,95 @@
+#include <stdio.h>   // Standard input-output library
+#include <stdlib.h>  // Standard library for malloc and free
+
+// Define the structure for a linked list node
+struct Node {
+    int data;           // Data part of node
+    struct Node* next;  // Pointer to next node
+};
+
+struct Node* head = NULL;  // Initialize head pointer to NULL (empty list)
+
+// Function to insert a new node at the beginning of the list
+void insertAtBeginning(int value) {
+    struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));  // Allocate memory for new node
+    newNode->data = value;          // Set node's data
+    newNode->next = head;           // Link new node to current head
+    head = newNode;                 // Update head to new node
+}
+
+// Function to insert a new node at the end of the list
+void insertAtEnd(int value) {
+    struct Node* newNode = (struct Node*) malloc(sizeof(struct Node));  // Allocate memory for new node
+    newNode->data = value;          // Set node's data
+    newNode->next = NULL;           // New node will be last, so next is NULL
+    
+    if (head == NULL) {             // If list is empty
+        head = newNode;             // New node becomes head
+        return;                    // End function
+    }
+
+    struct Node* temp = head;       // Temporary pointer for traversal
+    while (temp->next != NULL)      // Traverse to last node
+        temp = temp->next;
+    temp->next = newNode;           // Link last node to new node
+}
+
+// Function to delete node from the beginning of the list
+void deleteFromBeginning() {
+    if (head == NULL) {             // If list is empty
+        printf("List is empty\n");  // Print message
+        return;                    // End function
+    }
+    struct Node* temp = head;       // Store current head
+    head = head->next;              // Move head to next node
+    free(temp);                    // Free memory of old head node
+}
+
+// Function to delete node from the end of the list
+void deleteFromEnd() {
+    if (head == NULL) {             // If list is empty
+        printf("List is empty\n");  // Print message
+        return;                    // End function
+    }
+    if (head->next == NULL) {       // If only one node in list
+        free(head);                 // Free that node
+        head = NULL;                // Set head to NULL (empty list)
+        return;                    // End function
+    }
+    struct Node* temp = head;       // Temporary pointer for traversal
+    while (temp->next->next != NULL)  // Traverse until second last node
+        temp = temp->next;
+    free(temp->next);               // Free last node
+    temp->next = NULL;              // Set second last node's next to NULL
+}
+
+// Function to display the entire list
+void display() {
+    struct Node* temp = head;       // Temporary pointer to traverse list
+    if (temp == NULL) {             // If list is empty
+        printf("List is empty\n");  // Print message
+        return;                    // End function
+    }
+    printf("Singly Linked List: "); // Print list header
+    while (temp != NULL) {          // Traverse all nodes
+        printf("%d -> ", temp->data); // Print current node's data
+        temp = temp->next;           // Move to next node
+    }
+    printf("NULL\n");                // End of list indication
+}
+
+// Main function to test linked list operations
+int main() {
+    insertAtBeginning(10);           // Insert 10 at beginning
+    insertAtEnd(20);                 // Insert 20 at end
+    insertAtEnd(30);                 // Insert 30 at end
+    display();                      // Display list: 10 -> 20 -> 30 -> NULL
+
+    deleteFromBeginning();           // Delete node from beginning (10)
+    display();                      // Display list: 20 -> 30 -> NULL
+
+    deleteFromEnd();                 // Delete node from end (30)
+    display();                      // Display list: 20 -> NULL
+
+    return 0;                       // End program
+}

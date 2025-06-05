@@ -1,0 +1,21 @@
+#include <stdio.h>  // Include standard input/output library
+
+// Recursive function to calculate Fibonacci number
+int fibonacci(int n) {
+    if (n == 0) return 0;            // Base case: Fibonacci of 0 is 0
+    if (n == 1) return 1;            // Base case: Fibonacci of 1 is 1
+    return fibonacci(n - 1) + fibonacci(n - 2);  // Recursive call for n-1 and n-2
+}
+
+int main() {
+    int terms = 10;                 // Number of Fibonacci terms to display
+
+    printf("Fibonacci Series up to %d terms:\n", terms); // Print header
+
+    for (int i = 0; i < terms; i++) {
+        printf("%d ", fibonacci(i));  // Print the i-th Fibonacci number
+    }
+
+    printf("\n");                   // Move to the next line after printing series
+    return 0;                       // End of program
+}

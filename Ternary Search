@@ -1,0 +1,17 @@
+int ternarySearch(int arr[], int l, int r, int key) {
+    if (r >= l) {  // Continue search while valid range exists
+        int mid1 = l + (r - l) / 3;   // Calculate first mid index (1/3rd position)
+        int mid2 = r - (r - l) / 3;   // Calculate second mid index (2/3rd position)
+
+        if (arr[mid1] == key) return mid1;  // If key found at mid1, return index
+        if (arr[mid2] == key) return mid2;  // If key found at mid2, return index
+
+        if (key < arr[mid1])  // If key is less than value at mid1
+            return ternarySearch(arr, l, mid1 - 1, key);  // Search in left third
+        else if (key > arr[mid2])  // If key is greater than value at mid2
+            return ternarySearch(arr, mid2 + 1, r, key);  // Search in right third
+        else
+            return ternarySearch(arr, mid1 + 1, mid2 - 1, key);  // Search in middle third
+    }
+    return -1;  // Key not found, return -1
+}

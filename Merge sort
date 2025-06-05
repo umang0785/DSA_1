@@ -1,0 +1,47 @@
+#include <stdio.h>  // Standard input-output library
+
+// Function to merge two sorted subarrays arr[l..m] and arr[m+1..r]
+void merge(int arr[], int l, int m, int r) {
+    int i = l, j = m + 1, k = 0;               // Initialize pointers for left, right, and temp arrays
+    int temp[r - l + 1];                        // Temporary array to store merged elements
+
+    // Merge elements from two subarrays in sorted order
+    while (i <= m && j <= r)
+        temp[k++] = (arr[i] < arr[j]) ? arr[i++] : arr[j++];
+
+    // Copy remaining elements of left subarray, if any
+    while (i <= m)
+        temp[k++] = arr[i++];
+
+    // Copy remaining elements of right subarray, if any
+    while (j <= r)
+        temp[k++] = arr[j++];
+
+    // Copy merged elements back to original array
+    for (i = l, k = 0; i <= r; i++, k++)
+        arr[i] = temp[k];
+}
+
+// Recursive merge sort function to sort array from index l to r
+void mergeSort(int arr[], int l, int r) {
+    if (l < r) {
+        int m = (l + r) / 2;      // Find midpoint
+        mergeSort(arr, l, m);     // Sort left half
+        mergeSort(arr, m + 1, r); // Sort right half
+        merge(arr, l, m, r);      // Merge sorted halves
+    }
+}
+
+// Main function to test merge sort
+int main() {
+    int arr[] = {38, 27, 43, 3, 9, 82, 10};          // Input array
+    int n = sizeof(arr) / sizeof(arr[0]);             // Calculate number of elements
+
+    mergeSort(arr, 0, n - 1);                          // Sort the array
+
+    printf("Sorted array:\n");
+    for (int i = 0; i < n; i++)                        // Print sorted array
+        printf("%d ", arr[i]);
+
+    return 0;
+}

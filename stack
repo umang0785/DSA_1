@@ -1,0 +1,73 @@
+#include <stdio.h>       // Include standard input-output library
+#define MAX 100          // Define maximum size of stack as 100
+
+int stack[MAX];          // Array to hold stack elements
+int top = -1;            // Initialize top of stack to -1 (empty stack)
+
+// Function to check if stack is full
+int isFull() {
+    return top == MAX - 1;   // Returns true if top reached last index
+}
+
+// Function to check if stack is empty
+int isEmpty() {
+    return top == -1;        // Returns true if no elements in stack
+}
+
+// Function to push a value onto stack
+void push(int value) {
+    if (isFull()) {          // Check if stack is full
+        printf("Stack Overflow! Cannot push %d\n", value);  // Print error message
+    } else {
+        stack[++top] = value; // Increment top and add value to stack
+        printf("Pushed %d to stack\n", value);              // Print confirmation
+    }
+}
+
+// Function to pop top value from stack
+int pop() {
+    if (isEmpty()) {         // Check if stack is empty
+        printf("Stack Underflow! Cannot pop\n");  // Print error message
+        return -1;           // Return -1 to indicate failure
+    } else {
+        return stack[top--];  // Return top element and decrement top
+    }
+}
+
+// Function to get top element without popping
+int peek() {
+    if (isEmpty()) {          // Check if stack is empty
+        printf("Stack is empty!\n");  // Print message
+        return -1;            // Return -1 to indicate no element
+    } else {
+        return stack[top];    // Return top element without removing
+    }
+}
+
+// Function to display all elements in stack
+void display() {
+    if (isEmpty()) {          // Check if stack is empty
+        printf("Stack is empty!\n");  // Print message
+    } else {
+        printf("Stack elements: ");    // Print header
+        for (int i = top; i >= 0; i--) { // Loop from top to bottom
+            printf("%d ", stack[i]);   // Print each element
+        }
+        printf("\n");                   // Newline after printing stack
+    }
+}
+
+// Main function to demonstrate stack operations
+int main() {
+    push(10);                // Push 10 onto stack
+    push(20);                // Push 20 onto stack
+    push(30);                // Push 30 onto stack
+    display();               // Display stack contents
+
+    printf("Top element is %d\n", peek());  // Print top element
+
+    printf("Popped element is %d\n", pop());  // Pop and print top element
+    display();               // Display stack contents after pop
+
+    return 0;                // End program
+}

@@ -1,0 +1,20 @@
+int binarySearch(int arr[], int l, int r, int key) {
+    // Continue searching while the left index is less than or equal to the right index
+    while (l <= r) {
+        // Calculate the middle index to avoid overflow
+        int mid = l + (r - l) / 2;
+
+        // If the key is found at mid, return the index
+        if (arr[mid] == key) return mid;
+
+        // If the key is greater than the middle element,
+        // it can only be present in the right subarray
+        if (arr[mid] < key) l = mid + 1;
+
+        // Otherwise, the key must be in the left subarray
+        else r = mid - 1;
+    }
+
+    // If the key is not found in the array, return -1
+    return -1;
+}

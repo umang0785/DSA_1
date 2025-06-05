@@ -1,0 +1,71 @@
+#include <stdio.h>           // For standard input/output functions
+
+#define SIZE 5               // Define the maximum size of the queue
+
+int queue[SIZE];             // Declare an array to hold the queue elements
+int front = -1, rear = -1;   // Initialize front and rear pointers
+
+// Function to check if the queue is full
+int isFull() {
+    return rear == SIZE - 1;  // Queue is full if rear reaches last index
+}
+
+// Function to check if the queue is empty
+int isEmpty() {
+    return front == -1 || front > rear;  // Empty if front not set or all elements dequeued
+}
+
+// Function to add an element to the queue
+void enqueue(int value) {
+    if (isFull()) {                           // Check for overflow
+        printf("Queue Overflow!\n");
+        return;
+    }
+    if (front == -1) front = 0;               // If inserting first element, set front to 0
+    queue[++rear] = value;                    // Increment rear and insert value
+    printf("Inserted %d\n", value);
+}
+
+// Function to remove and return the front element
+int dequeue() {
+    if (isEmpty()) {                          // Check for underflow
+        printf("Queue Underflow!\n");
+        return -1;
+    }
+    int val = queue[front++];                 // Store and remove front element, increment front
+    return val;
+}
+
+// Function to return the front element without removing it
+int peek() {
+    if (isEmpty()) return -1;                 // If empty, return -1
+    return queue[front];                      // Return front element
+}
+
+// Function to display the elements of the queue
+void display() {
+    if (isEmpty()) {                          // If empty, show message
+        printf("Queue is empty\n");
+        return;
+    }
+    printf("Queue: ");
+    for (int i = front; i <= rear; i++) {     // Loop from front to rear and print each element
+        printf("%d ", queue[i]);
+    }
+    printf("\n");
+}
+
+// Main function to test the queue operations
+int main() {
+    enqueue(10);                              // Insert 10
+    enqueue(20);                              // Insert 20
+    enqueue(30);                              // Insert 30
+    display();                                // Show current queue
+
+    printf("Dequeued: %d\n", dequeue());      // Remove front element and print it
+    display();                                // Show queue after dequeue
+
+    printf("Front element: %d\n", peek());    // Display the current front element
+
+    return 0;                                 // End of program
+}

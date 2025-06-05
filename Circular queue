@@ -1,0 +1,94 @@
+#include <stdio.h>          // For input/output functions
+#define SIZE 5              // Define maximum size of the circular queue
+
+int cqueue[SIZE];           // Array to store circular queue elements
+int front = -1, rear = -1;  // Initialize front and rear to -1 indicating an empty queue
+
+// Function to check if the queue is full
+int isFull() {
+    return (front == (rear + 1) % SIZE); // Queue is full when next rear index equals front
+}
+
+// Function to check if the queue is empty
+int isEmpty() {
+    return front == -1;     // Queue is empty if front is -1
+}
+
+// Function to insert an element into the queue
+void enqueue(int value) {
+    if (isFull()) {         // Check for overflow condition
+        printf("Circular Queue Overflow!\n");
+        return;
+    }
+
+    if (isEmpty()) {
+        front = rear = 0;   // If queue is empty, set front and rear to 0
+    } else {
+        rear = (rear + 1) % SIZE; // Move rear forward circularly
+    }
+
+    cqueue[rear] = value;   // Insert value at the rear
+    printf("Inserted %d\n", value);
+}
+
+// Function to remove and return an element from the queue
+int dequeue() {
+    if (isEmpty()) {        // Check for underflow condition
+        printf("Circular Queue Underflow!\n");
+        return -1;
+    }
+
+    int val = cqueue[front]; // Store the value to return
+
+    if (front == rear) {
+        front = rear = -1;  // If only one element was present, reset queue
+    } else {
+        front = (front + 1) % SIZE; // Move front forward circularly
+    }
+
+    return val;             // Return dequeued value
+}
+
+// Function to view the front element without removing it
+int peek() {
+    if (isEmpty()) return -1;  // Return -1 if queue is empty
+    return cqueue[front];      // Return front element
+}
+
+// Function to display the contents of the queue
+void display() {
+    if (isEmpty()) {
+        printf("Circular Queue is empty\n");
+        return;
+    }
+
+    printf("Circular Queue: ");
+    int i = front;
+
+    // Loop from front to rear circularly
+    while (1) {
+        printf("%d ", cqueue[i]);
+        if (i == rear) break;       // Stop when rear is reached
+        i = (i + 1) % SIZE;         // Move to next index circularly
+    }
+
+    printf("\n");
+}
+
+// Main function to test the circular queue
+int main() {
+    enqueue(100);   // Insert 100
+    enqueue(200);   // Insert 200
+    enqueue(300);   // Insert 300
+    enqueue(400);   // Insert 400
+    enqueue(500);   // Insert 500 (queue is full now)
+
+    display();      // Display current queue contents
+
+    printf("Dequeued: %d\n", dequeue());  // Remove front element (100)
+    enqueue(600);   // Insert 600 (should succeed as one space is freed)
+    
+    display();      // Display updated queue contents
+
+    return 0;
+}

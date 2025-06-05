@@ -1,0 +1,23 @@
+#include <stdio.h>  // Include standard input-output library
+
+// Recursive function to solve Tower of Hanoi problem
+void TOH(int n, char source, char auxiliary, char destination) {
+    if (n == 1) {  // Base case: if only one disk
+        // Print the move from source to destination
+        printf("Move disk 1 from %c to %c\n", source, destination);
+        return;  // Return after moving the last disk
+    }
+    // Move top n-1 disks from source to auxiliary using destination as temporary
+    TOH(n - 1, source, destination, auxiliary); 
+    // Move the nth (largest) disk from source to destination
+    printf("Move disk %d from %c to %c\n", n, source, destination);
+    // Move the n-1 disks from auxiliary to destination using source as temporary
+    TOH(n - 1, auxiliary, source, destination); 
+}
+
+int main() {
+    int n = 3;  // No. of disks to move
+    printf("Tower of Hanoi Solution for %d disks:\n", n);  // Print initial message
+    TOH(n, 'A', 'B', 'C');  // Call TOH function with 'A' as source, 'B' as auxiliary, and 'C' as destination rods
+    return 0;  // Exit program
+}

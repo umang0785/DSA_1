@@ -1,0 +1,83 @@
+#include <stdio.h>            // Include standard input/output library
+#define MAX 100               // Define a constant MAX for the heap size
+
+int heap[MAX];                // Declare an array to represent the heap
+int size = 0;                 // Variable to store current number of elements in the heap
+
+// Function to swap two integers
+void swap(int *a, int *b) {
+    int temp = *a;            // Store value at address a in temp
+    *a = *b;                  // Assign value at address b to address a
+    *b = temp;                // Assign temp (original a) to address b
+}
+
+// Function to insert an element into the Max Heap
+void insert(int val) {
+    heap[size] = val;         // Place the new value at the end of the heap
+    int i = size;             // Initialize index to the inserted element
+    size++;                   // Increase size of the heap
+
+    // Bubble up: compare with parent and swap until heap property is maintained
+    while (i > 0 && heap[(i - 1) / 2] < heap[i]) {
+        swap(&heap[i], &heap[(i - 1) / 2]);  // Swap with parent if child > parent
+        i = (i - 1) / 2;      // Move index to parent
+    }
+}
+
+// Function to maintain the Max Heap property from index i downward
+void heapify(int i) {
+    int largest = i;          // Assume the current index is the largest
+    int left = 2 * i + 1;     // Index of the left child
+    int right = 2 * i + 2;    // Index of the right child
+
+    // Check if left child exists and is greater than current largest
+    if (left < size && heap[left] > heap[largest])
+        largest = left;       // Update largest to left child
+
+    // Check if right child exists and is greater than current largest
+    if (right < size && heap[right] > heap[largest])
+        largest = right;      // Update largest to right child
+
+    // If the largest is not the current index, swap and recurse
+    if (largest != i) {
+        swap(&heap[i], &heap[largest]);  // Swap current with the largest child
+        heapify(largest);                // Recursively heapify the affected subtree
+    }
+}
+
+// Function to delete and return the maximum element (root) of the Max Heap
+int deleteMax() {
+    if (size <= 0) return -1; // If heap is empty, return -1
+
+    int max = heap[0];        // Store the root (maximum value)
+    heap[0] = heap[size - 1]; // Replace root with the last element
+    size--;                   // Decrease the size of the heap
+    heapify(0);               // Restore heap property from the root down
+
+    return max;               // Return the deleted maximum element
+}
+
+// Function to display the heap as an array
+void display() {
+    printf("Heap array: ");   // Print header
+    for (int i = 0; i < size; i++)       // Loop through the heap array
+        printf("%d ", heap[i]);          // Print each element
+    printf("\n");            // Move to next line after printing all elements
+}
+
+// Main function to demonstrate heap operations
+int main() {
+    insert(40);              // Insert 40 into heap
+    insert(30);              // Insert 30
+    insert(60);              // Insert 60
+    insert(20);              // Insert 20
+    insert(15);              // Insert 15
+    insert(75);              // Insert 75
+
+    display();               // Display heap after insertions
+
+    printf("Deleted max = %d\n", deleteMax()); // Delete the max (root) and print it
+    display();               // Display heap after deletion
+
+    return 0;                // Exit program
+}

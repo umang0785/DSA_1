@@ -1,0 +1,114 @@
+#include <stdio.h>      // For input/output functions
+#include <stdlib.h>     // For malloc() and free()
+
+// Structure for a doubly linked list node
+struct DNode {
+    int data;                   // Data stored in the node
+    struct DNode* prev;         // Pointer to the previous node
+    struct DNode* next;         // Pointer to the next node
+};
+
+struct DNode* head = NULL;      // Global pointer to the head of the list (initially empty)
+
+// Function to insert a node at the beginning of the list
+void insertAtBeginning(int value) {
+    struct DNode* newNode = (struct DNode*) malloc(sizeof(struct DNode)); // Allocate memory
+    newNode->data = value;         // Set node data
+    newNode->prev = NULL;          // New node will be the first, so prev is NULL
+    newNode->next = head;          // Link new node to current head
+
+    if (head != NULL)
+        head->prev = newNode;      // Update current head's prev if list is not empty
+
+    head = newNode;                // Update head to the new node
+}
+
+// Function to insert a node at the end of the list
+void insertAtEnd(int value) {
+    struct DNode* newNode = (struct DNode*) malloc(sizeof(struct DNode)); // Allocate memory
+    newNode->data = value;         // Set node data
+    newNode->next = NULL;          // It will be the last node, so next is NULL
+
+    if (head == NULL) {            // If list is empty, make it the head
+        newNode->prev = NULL;
+        head = newNode;
+        return;
+    }
+
+    struct DNode* temp = head;     // Traverse to the last node
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->next = newNode;          // Link last node to new node
+    newNode->prev = temp;          // Link new node back to last node
+}
+
+// Function to delete a node from the beginning of the list
+void deleteFromBeginning() {
+    if (head == NULL) {            // Check if list is empty
+        printf("List is empty\n");
+        return;
+    }
+
+    struct DNode* temp = head;     // Store current head in temp
+    head = head->next;             // Move head to the next node
+
+    if (head != NULL)
+        head->prev = NULL;         // Set new head's prev to NULL
+
+    free(temp);                    // Free memory of old head
+}
+
+// Function to delete a node from the end of the list
+void deleteFromEnd() {
+    if (head == NULL) {            // Check if list is empty
+        printf("List is empty\n");
+        return;
+    }
+
+    if (head->next == NULL) {      // If only one node exists
+        free(head);
+        head = NULL;
+        return;
+    }
+
+    struct DNode* temp = head;     // Traverse to the last node
+    while (temp->next != NULL)
+        temp = temp->next;
+
+    temp->prev->next = NULL;       // Detach last node from the list
+    free(temp);                    // Free memory of last node
+}
+
+// Function to display the list
+void display() {
+    struct DNode* temp = head;
+
+    if (temp == NULL) {
+        printf("List is empty\n");
+        return;
+    }
+
+    printf("Doubly Linked List: ");
+    while (temp != NULL) {
+        printf("%d <-> ", temp->data);   // Print node data
+        temp = temp->next;               // Move to next node
+    }
+    printf("NULL\n");                    // End of list
+}
+
+// Main function to demonstrate operations
+int main() {
+    insertAtBeginning(100);  // Insert 100 at the beginning
+    insertAtEnd(200);        // Insert 200 at the end
+    insertAtEnd(300);        // Insert 300 at the end
+    display();               // Display list: 100 <-> 200 <-> 300 <-> NULL
+
+    deleteFromBeginning();   // Remove 100
+    display();               // Display list: 200 <-> 300 <-> NULL
+
+    deleteFromEnd();         // Remove 300
+    display();               // Display list: 200 <-> NULL
+
+    return 0;
+}
